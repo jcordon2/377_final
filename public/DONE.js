@@ -38,6 +38,8 @@ resultsDiv.innerHTML = '';
     div.className = 'card';
 
     div.innerHTML = `<h3>${book.title || 'Unknown Title'}</h3> <p>${book.author_name?.[0] || 'Unknown Author'}</p>`;
+
+    resultsDiv.appendChild(div);
   })
 
   resultJson.music?.forEach((song) => {
