@@ -78,6 +78,10 @@ app.post('/history', async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/frontpage.html')
+});
+
 app.get('/recommendations', async (req, res) => {
   console.log('generating recs...');
 
