@@ -2,12 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const supabaseClient = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
-const axios = require ('axios');
+const axios = require('axios');
+
 dotenv.config();
 
 const app = express();
 const port = 3000;
-
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
@@ -15,12 +15,13 @@ app.use(express.static(__dirname + '/public'));
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const ombdKey = process.env.OMDB_KEY;
+
 const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 
 const moodMap = {
   happy: "comedy feel-good uplifting",
   sad: "drama emotional heartbreaking",
-  calm: "relaxing peacful ambient",
+  calm: "relaxing peaceful ambient",
   angry: "action intense violent thriller",
   romantic: "romance love relationship",
   cozy: "warm comforting slice-of-life",
@@ -28,23 +29,23 @@ const moodMap = {
 };
 
 function validateParams(req, res) {
-  const { mood, mediaType, amount } = req.querey;
+  const { mood, mediaType, amount } = req.query;
 
   if (!mood || !mediaType || !amount) {
     res.status(400).json({ error: "Missing all 3!" });
     return false;
-
   }
   return true;
-
 }
+
+// ------------------- HISTORY GET -------------------
 app.get('/history', async (req, res) => {
   console.log('Getting History!');
 
   const { data, error } = await supabase
-  .from('history')
-  .select()
-  .order('id', {ascending:false});
+    .from('history')
+    .select()
+    .order('id', { ascending: false });
 
   if (error) {
     console.log(error);
@@ -54,32 +55,37 @@ app.get('/history', async (req, res) => {
   }
 });
 
+// ------------------- HISTORY POST -------------------
 app.post('/history', async (req, res) => {
   console.log('Saving history entry');
 
-  const { mood, mediaType, amount } = req.body
+  const { mood, mediaType, amount } = req.body;
 
   const { data, error } = await supabase
     .from('history')
     .insert([
       {
-      mood, media_type: mediaType, amount
-    }
-  ])
-  .select();
+        mood,
+        media_type: mediaType,
+        amount
+      }
+    ])
+    .select();
 
   if (error) {
-    console.log(`Error: ${error}`);
+    console.log(error);
     res.status(500).send(error);
   } else {
     res.json(data);
   }
 });
 
+// ------------------- RECOMMENDATIONS -------------------
 app.get('/recommendations', async (req, res) => {
   console.log('generating recs...');
 
   const { mood, mediaType, amount } = req.query;
+
   const keyword = moodMap[mood] || "popular";
   const limit = parseInt(amount) || 3;
 
@@ -92,7 +98,7 @@ app.get('/recommendations', async (req, res) => {
 
     if (mediaType === 'movie' || mediaType === 'all') {
       const movieRes = await axios.get(
-        `http://www.omdbapi.com/?apikey=${process.env.OMDB_KEY}&s=${keyword}`
+        `http://www.omdbapi.com/?apikey=${ombdKey}&s=${keyword}`
       );
 
       results.movies = movieRes.data.Search?.slice(0, limit) || [];
