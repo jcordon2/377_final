@@ -1,69 +1,113 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const supabaseClient = require('@supabase/supabase-js');
-const { isValidStateAbbreviation } = require('usa-state-validator');
 const dotenv = require('dotenv');
+const axios = require ('axios');
 
 const app = express();
 const port = 3000;
 dotenv.config();
 
 app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 
-app.get('/customers', async (req, res) => {
-  console.log('Attempting to get all customers!');
+const moodMap = {
+  happy: "comedy feel-good uplifting",
+  sad: "drama emotional heartbreaking",
+  calm: "relaxing peacful ambient",
+  angry: "action intense violent thriller",
+  romantic: "romance love relationship",
+  cozy: "warm comforting slice-of-life",
+  adrenaline: "thriller suspense horror mystery"
 
-  const { data, error } = await supabase.from('customer').select();
+};
+
+app.get('/history', async (req, res) => {
+  console.log('Getting History!');
+
+  const { data, error } = await supabase.from('history').select().order('id', {ascending:false});
 
   if (error) {
-    console.log(`Error: ${error}`);
-    res.statusCode = 500;
-    res.send(error);
+    console.log(error);
+    res.status(500).send(error);
   } else {
-    console.log('Recieved Data:', data);
     res.json(data);
   }
 });
 
-app.post('/customer', async (req, res) => {
-  console.log('Adding Customer');
-  console.log(`Request: ${JSON.stringify(req.body)}`);
+app.post('/history', async (req, res) => {
+  console.log('Saving history entry');
 
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const state = req.body.state;
-
-  if (!isValidStateAbbreviation(state)) {
-    console.log(`State: ${state} is invalid`);
-    res.statusCode = 400;
-    res.json({
-      message: `${state} is not a valid 2 Letter Abbreviation for State`,
-    });
-    return;
-  }
+  const { mood, mediaType, amount } = req.body
 
   const { data, error } = await supabase
-    .from('customer')
-    .insert({
-      customer_first_name: firstName,
-      customer_last_name: lastName,
-      customer_state: state,
-    })
-    .select();
+    .from('history')
+    .insert([
+      {
+      mood, media_type: mediaType, amount
+    }
+  ])
+  .select();
 
   if (error) {
     console.log(`Error: ${error}`);
-    res.statusCode = 500;
-    res.send(error);
+    res.status(500).send(error);
   } else {
     res.json(data);
   }
 });
 
-app.listen(port, () => {
-  console.log(`App is available on port: ${port}`);
+app.get('/recommendations', async (req, res) => {
+  console.log('generating recs...');
+
+  const { mood, mediaType, amount } = req.query;
+  const keyword = moodMap[mood] || "popular";
+  const limit = parseInt(amount) || 3;
+
+  try {
+    let results = {
+      movies: [],
+      books: [],
+      music: []
+    };
+
+    if (mediaType === 'movie' || mediaType === 'all') {
+      const movieRes = await axios.get(
+        `http://www.omdbapi.com/?apikey=${process.env.OMDB_KEY}&s=${keyword}`
+      );
+
+      results.movies = movieRes.data.Search?.slice(0, limit) || [];
+    }
+
+    if (mediaType === 'book' || mediaType === 'all') {
+      const bookRes = await axios.get(
+        `https://openlibrary.org/search.json?q=${keyword}`
+      );
+
+      results.books = bookRes.data.docs?.slice(0, limit) || [];
+    }
+
+    if (mediaType === 'music' || mediaType === 'all') {
+      const musicRes = await axios.get(
+        `https://musicbrainz.org/ws/2/recording/?query=${keyword}&fmt=json`,
+        {
+          headers: {
+            'User-Agent': 'Final_Proj (jcordon2@terpmail.umd.edu)'
+          }
+        }
+      );
+
+      results.music = musicRes.data.recordings?.slice(0, limit) || [];
+    }
+
+    res.json(results);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
 });
