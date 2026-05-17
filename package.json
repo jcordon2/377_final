@@ -1,0 +1,29 @@
+{
+  "name": "final",
+  "version": "1.0.0",
+  "description": "INST377 FInal",
+  "homepage": "https://github.com/jcordon2/377_final#readme",
+  "bugs": {
+    "url": "https://github.com/jcordon2/377_final/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jcordon2/377_final.git"
+  },
+  "license": "ISC",
+  "author": "Juliana Cordon",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -e '*'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
+    "body-parser": "^2.2.2",
+    "dotenv": "17.4.2",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14",
+    "usa-state-validator": "^1.0.6"
+  }
+}
