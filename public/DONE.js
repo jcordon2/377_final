@@ -27,4 +27,24 @@ async function loadRecommendations() {
 
     resultsDiv.appendChild(div);
     });
+
+    resultJson.music.forEach((song) => {const div = document.createElement('div');
+        div.className = 'card';
+
+        div.innerHTML = `<h3>${song.title || 'Unknown Song'}</h3> <p>${song['artist-credit']?.[0]?.name || 'Unknown Artist'}</p>`;
+
+        resultsDiv.appendChild(div);
+    });
+
+    await fetch('/history', {
+        method: 'POST',
+        body: JSON.stringify({
+            mood, mediaType, amount
+        }),
+        headers: {
+            'content-type': 'application/json'
+        }
+    });
 }
+
+window.onload = loadRecommendations
