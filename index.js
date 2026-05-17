@@ -3,16 +3,18 @@ const bodyParser = require('body-parser');
 const supabaseClient = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
 const axios = require ('axios');
+dotenv.config();
 
 const app = express();
 const port = 3000;
-dotenv.config();
+
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
+const ombdKey = process.env.OMDB_KEY;
 const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 
 const moodMap = {
@@ -23,13 +25,26 @@ const moodMap = {
   romantic: "romance love relationship",
   cozy: "warm comforting slice-of-life",
   adrenaline: "thriller suspense horror mystery"
-
 };
 
+function validateParams(req, res) {
+  const { mood, mediaType, amount } = req.querey;
+
+  if (!mood || !mediaType || !amount) {
+    res.status(400).json({ error: "Missing all 3!" });
+    return false;
+
+  }
+  return true;
+
+}
 app.get('/history', async (req, res) => {
   console.log('Getting History!');
 
-  const { data, error } = await supabase.from('history').select().order('id', {ascending:false});
+  const { data, error } = await supabase
+  .from('history')
+  .select()
+  .order('id', {ascending:false});
 
   if (error) {
     console.log(error);
@@ -111,3 +126,5 @@ app.get('/recommendations', async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+module.exports = app;
