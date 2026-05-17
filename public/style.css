@@ -1,3 +1,44 @@
+body {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    background-color: rgb(224, 182, 202);
+    text-align: center;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 200px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border:color-mix(in lch increasing hue, color percentage, color percentage);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+select {
+    padding: 8px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px auto;
+    width: 250px;
+}
+
+img {
+    border-radius: 8px;
+}
+
 .full-width-divider {
     width: 80%;
     height: 50px;
