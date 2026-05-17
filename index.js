@@ -86,7 +86,6 @@ app.get('/recommendations', async (req, res) => {
   console.log('generating recs...');
 
   const { mood, mediaType, amount } = req.query;
-
   const keyword = moodMap[mood] || "popular";
   const limit = parseInt(amount) || 3;
 
@@ -98,40 +97,50 @@ app.get('/recommendations', async (req, res) => {
     };
 
     if (mediaType === 'movie' || mediaType === 'all') {
-      const movieRes = await axios.get(
-        `http://www.omdbapi.com/?apikey=${ombdKey}&s=${keyword}`
-      );
+      try {
+        const movieRes = await axios.get(
+          `http://www.omdbapi.com/?apikey=${process.env.OMDB_KEY}&s=${keyword}`
+        );
 
-      results.movies = movieRes.data.Search?.slice(0, limit) || [];
+        results.movies = movieRes.data?.Search?.slice(0, limit) || [];
+      } catch (err) {
+        console.log("OMDb failed:", err.message);
+      }
     }
 
     if (mediaType === 'book' || mediaType === 'all') {
-      const bookRes = await axios.get(
-        `https://openlibrary.org/search.json?q=${keyword}`
-      );
+      try {
+        const bookRes = await axios.get(
+          `https://openlibrary.org/search.json?q=${keyword}`
+        );
 
-      results.books = bookRes.data.docs?.slice(0, limit) || [];
+        results.books = bookRes.data?.docs?.slice(0, limit) || [];
+      } catch (err) {
+        console.log("Books failed:", err.message);
+      }
     }
 
     if (mediaType === 'music' || mediaType === 'all') {
-      const musicRes = await axios.get(
-        `https://musicbrainz.org/ws/2/recording/?query=${keyword}&fmt=json`,
-        {
-          headers: {
-            'User-Agent': 'Final_Proj (jcordon2@terpmail.umd.edu)'
+      try {
+        const musicRes = await axios.get(
+          `https://musicbrainz.org/ws/2/recording/?query=${keyword}&fmt=json`,
+          {
+            headers: {
+              'User-Agent': 'Final_Proj (jcordon2@terpmail.umd.edu)'
+            }
           }
-        }
-      );
+        );
 
-      results.music = musicRes.data.recordings?.slice(0, limit) || [];
+        results.music = musicRes.data?.recordings?.slice(0, limit) || [];
+      } catch (err) {
+        console.log("Music failed:", err.message);
+      }
     }
 
     res.json(results);
 
   } catch (error) {
-    console.log(error);
+    console.log("TOTAL ROUTE FAIL:", error);
     res.status(500).send(error);
   }
 });
-
-module.exports = app;
