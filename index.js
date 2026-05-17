@@ -19,13 +19,13 @@ const ombdKey = process.env.OMDB_KEY;
 const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 
 const moodMap = {
-  happy: "comedy feel-good uplifting",
-  sad: "drama emotional heartbreaking",
-  calm: "relaxing peacful ambient",
-  angry: "action intense violent thriller",
-  romantic: "romance love relationship",
-  cozy: "warm comforting slice-of-life",
-  adrenaline: "suspense horror mystery"
+  happy: "comedy",
+  sad: "drama",
+  calm: "relaxing",
+  angry: "violent",
+  romantic: "romance",
+  cozy: "slice-of-life",
+  adrenaline: "suspense"
 };
 
 function validateParams(req, res) {
