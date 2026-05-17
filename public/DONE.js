@@ -18,7 +18,7 @@ async function loadRecommendations() {
     resultJson.movies.forEach((movie) => {const div = document.createElement('div'); 
     div.className = 'card';
 
-    div.innerHTML = `<h3>${movie.Title}</h3> <p>${movie.Year}</p> <img src = "${movies.Poster}" width="150px">`;
+    div.innerHTML = `<h3>${movie.Title}</h3> <p>${movie.Year}</p> <img src = "${movie.Poster}" width="150px">`;
 
     resultsDiv.appendChild(div);
 });
