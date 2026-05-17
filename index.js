@@ -144,3 +144,5 @@ app.get('/recommendations', async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+module.expoert = app;
