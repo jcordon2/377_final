@@ -1,9 +1,9 @@
 function startApp() {
-    window.location = "choosemedia.html";
+    window.location = 'choosemedia.html';
 }
 
 function goAbout () {
-    window.location="quickbat.html";
+    window.location= 'quickabt.html';
 }
 
 function saveChoices() {
