@@ -1,3 +1,5 @@
+console.log("DONE.js is running");
+
 async function loadRecommendations() {
     const mood = localStorage.getItem('mood');
     const mediaType = localStorage.getItem('mediaType');
