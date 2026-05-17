@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Selection of Media </title>
+        <link rel = "stylesheet" href = "style.css">
+        <script defer src = "choose.js"></script>
+    </head>
+
+    <center>
+    <body>
+        <div class = "container">
+        <h1> What kind of rec. are you looking for? </h1>
+
+        <form onsubmit="saveChoices(); return false;">
+        
+        <label> Media Type: </label>
+        <select id = "mediaType">
+
+            <option value="movie"> Movie </option>
+            <option value="book"> Book </option>
+            <option value="music"> Music </option>
+            <option value="all"> ALL 3 ! </option>
+
+        </select>
+
+        <label> Amount: </label>
+        <select id ="amount">
+
+            <option value="1"> 1 </option>
+            <option value="2"> 3 </option>
+            <option value="3"> 5 </option>
+
+        </select>
+
+        <br><br>
+
+        <button type = "submit"> Cont. </button>
+
+        </form>
+        </div>
+        </center>
+    </body>
+</html>
