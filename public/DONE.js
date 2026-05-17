@@ -67,12 +67,13 @@ async function loadRecommendations() {
 
     resultsDiv.appendChild(div);
   });
-
+/*
   await fetch('/history', {
     method: 'POST',
     body: JSON.stringify({ mood, mediaType, amount }),
     headers: { 'content-type': 'application/json' }
   });
 }
-
+*/
+}
 window.onload = loadRecommendations;
