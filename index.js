@@ -38,7 +38,6 @@ function validateParams(req, res) {
   return true;
 }
 
-// ------------------- HISTORY GET -------------------
 app.get('/history', async (req, res) => {
   console.log('Getting History!');
 
@@ -55,7 +54,6 @@ app.get('/history', async (req, res) => {
   }
 });
 
-// ------------------- HISTORY POST -------------------
 app.post('/history', async (req, res) => {
   console.log('Saving history entry');
 
@@ -80,7 +78,6 @@ app.post('/history', async (req, res) => {
   }
 });
 
-// ------------------- RECOMMENDATIONS -------------------
 app.get('/recommendations', async (req, res) => {
   console.log('generating recs...');
 
