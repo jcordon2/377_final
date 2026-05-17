@@ -23,7 +23,7 @@ async function loadRecommendations() {
     resultsDiv.appendChild(div);
 });
 
-    resultJson.books.forEach((book) => { const div = documents.createElement('div');
+    resultJson.books.forEach((book) => { const div = document.createElement('div');
     div.className = 'card'; 
     div.innerHTML = `<h3>${book.title || 'Unknown Title'} </h3> <p>${book.author_name?.[0] || 'Unknown Author'}</p>`;
 
@@ -49,4 +49,4 @@ async function loadRecommendations() {
     });
 }
 
-window.onload = loadRecommendations
+window.onload = loadRecommendations;
