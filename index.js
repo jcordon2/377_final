@@ -145,4 +145,4 @@ app.get('/recommendations', async (req, res) => {
   }
 });
 
-module.expoert = app;
+module.export = app;
