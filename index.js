@@ -21,11 +21,11 @@ const supabase = supabaseClient.createClient(supabaseUrl, supabaseKey);
 const moodMap = {
   happy: "comedy feel-good uplifting",
   sad: "drama emotional heartbreaking",
-  calm: "relaxing peaceful ambient",
+  calm: "relaxing peacful ambient",
   angry: "action intense violent thriller",
   romantic: "romance love relationship",
   cozy: "warm comforting slice-of-life",
-  adrenaline: "thriller suspense horror mystery"
+  adrenaline: "suspense horror mystery"
 };
 
 function validateParams(req, res) {

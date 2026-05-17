@@ -1,0 +1,6 @@
+.full-width-divider {
+    width: 80%;
+    height: 50px;
+    object-fit: cover;
+    display: block;
+}
