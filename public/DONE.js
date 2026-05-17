@@ -3,14 +3,15 @@ async function loadRecommendations() {
     const mediaType = localStorage.getItem('mediaType');
     const amount = localStorage.getItem('amount');
 
-    let resultJson;
-
     await fetch(
         `/recommendations?mood=${mood}&mediaType=${mediaType}&amount=${amount}`
     )
 
     .then((result) => result.json())
     .then((json) => {console.log(json); resultJson = json;});
+
+    const resultJson = await response.json();
+    console.log(resultJson);
     
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = '';
