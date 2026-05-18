@@ -1,9 +1,14 @@
 body {
     font-family:Georgia, 'Times New Roman', Times, serif;
-    background-color: rgb(224, 182, 202);
+    background-color: rgba(253, 159, 203, 0.788);
     text-align: center;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .container {
     margin-top: 50px;
 }
@@ -15,14 +20,39 @@ body {
     width: 200px;
 }
 
-button {
+button, input [type = "submit"] {
+    background: rgb(136, 101, 38);
     padding: 10px 20px;
     margin: 10px;
-    border:color-mix(in lch increasing hue, color percentage, color percentage);
-    border-radius: 10px;
+    border:none;
+    border-radius: 20px;
     cursor: pointer;
+    font-weight: 660;
+    transition: all 0.2s ease-in-out;
 }
 
+button:hover, input[type="submit"]:hover {
+    transform: translateY(-2px);
+    background: #ffbdbd;
+}
+
+form {
+    background: #fff79f;
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(255, 227, 178, 0.761);
+    margin: 20px;
+    width: 300px;
+}
+
+#results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
 select {
     padding: 8px;
 }
